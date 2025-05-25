@@ -132,7 +132,7 @@ export default function SearchFilters({ onSearch, onFilterChange }: SearchFilter
                       <SelectValue placeholder="Any length" />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="">Any length</SelectItem>
+                      <SelectItem value="any">Any length</SelectItem>
                       <SelectItem value="short">Under 90 minutes</SelectItem>
                       <SelectItem value="medium">90-120 minutes</SelectItem>
                       <SelectItem value="long">2+ hours</SelectItem>
@@ -150,7 +150,7 @@ export default function SearchFilters({ onSearch, onFilterChange }: SearchFilter
                       <SelectValue placeholder="Any decade" />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="">Any decade</SelectItem>
+                      <SelectItem value="any">Any decade</SelectItem>
                       <SelectItem value="2020s">2020s</SelectItem>
                       <SelectItem value="2010s">2010s</SelectItem>
                       <SelectItem value="2000s">2000s</SelectItem>
@@ -170,7 +170,7 @@ export default function SearchFilters({ onSearch, onFilterChange }: SearchFilter
                       <SelectValue placeholder="Any language" />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="">Any language</SelectItem>
+                      <SelectItem value="any">Any language</SelectItem>
                       <SelectItem value="en">English</SelectItem>
                       <SelectItem value="non-en">Non-English</SelectItem>
                       <SelectItem value="silent">Silent films</SelectItem>

@@ -165,7 +165,23 @@ export class MemStorage implements IStorage {
 
   async createMovie(insertMovie: InsertMovie): Promise<Movie> {
     const id = this.currentMovieId++;
-    const movie: Movie = { ...insertMovie, id };
+    const movie: Movie = { 
+      ...insertMovie, 
+      id,
+      overview: insertMovie.overview ?? null,
+      releaseDate: insertMovie.releaseDate ?? null,
+      posterPath: insertMovie.posterPath ?? null,
+      backdropPath: insertMovie.backdropPath ?? null,
+      genres: insertMovie.genres ? [...insertMovie.genres] : null,
+      runtime: insertMovie.runtime ?? null,
+      voteAverage: insertMovie.voteAverage ?? null,
+      voteCount: insertMovie.voteCount ?? null,
+      popularity: insertMovie.popularity ?? null,
+      originalLanguage: insertMovie.originalLanguage ?? null,
+      cinematicDna: insertMovie.cinematicDna ?? null,
+      moodTags: insertMovie.moodTags ?? null,
+      microGenres: insertMovie.microGenres ?? null
+    };
     this.movies.set(id, movie);
     return movie;
   }
@@ -229,6 +245,9 @@ export class MemStorage implements IStorage {
     const rating: UserRating = { 
       ...insertRating, 
       id,
+      feedback: insertRating.feedback ?? null,
+      moodContext: insertRating.moodContext ?? null,
+      viewingContext: insertRating.viewingContext ?? null,
       createdAt: new Date()
     };
     this.userRatings.set(`${insertRating.userId}-${insertRating.movieId}`, rating);
