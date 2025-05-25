@@ -3,7 +3,7 @@ import {
   type User, type InsertUser, type Movie, type InsertMovie, 
   type UserRating, type InsertUserRating, type UserPreferences, type InsertUserPreferences 
 } from "@shared/schema";
-import { movieDatabase } from "./movie-data";
+import { comprehensiveMovieDatabase } from "./comprehensive-movie-data";
 
 export interface IStorage {
   // Users
@@ -58,20 +58,25 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeSampleMovies() {
-    for (const movie of movieDatabase) {
+    for (const movie of comprehensiveMovieDatabase) {
       await this.createMovie(movie);
     }
     
     // Add sample user and ratings to make My List functional
-    await this.createUser({ username: "demo_user", email: "demo@example.com" });
+    await this.createUser({ username: "demo_user", password: "demo123" });
     
     // Add some sample ratings for the demo user
     const sampleRatings = [
-      { userId: 1, movieId: 1, rating: 5, feedback: "Amazing sci-fi masterpiece!" },
-      { userId: 1, movieId: 2, rating: 4, feedback: "Great sequel to the original." },
-      { userId: 1, movieId: 3, rating: 4, feedback: "Mind-bending thriller!" },
-      { userId: 1, movieId: 4, rating: 3, feedback: "Decent action movie." },
-      { userId: 1, movieId: 5, rating: 5, feedback: "Perfect movie for any mood!" }
+      { userId: 1, movieId: 1, rating: 5, feedback: "Amazing superhero epic!" },
+      { userId: 1, movieId: 2, rating: 4, feedback: "Great conclusion to the saga." },
+      { userId: 1, movieId: 3, rating: 5, feedback: "Incredible animation style!" },
+      { userId: 1, movieId: 4, rating: 5, feedback: "One of the greatest films ever made." },
+      { userId: 1, movieId: 5, rating: 4, feedback: "Classic crime family saga." },
+      { userId: 1, movieId: 6, rating: 5, feedback: "Mind-blowing space epic!" },
+      { userId: 1, movieId: 7, rating: 4, feedback: "Complex and brilliant." },
+      { userId: 1, movieId: 8, rating: 5, feedback: "Perfect superhero movie." },
+      { userId: 1, movieId: 9, rating: 5, feedback: "Bollywood classic romance!" },
+      { userId: 1, movieId: 10, rating: 4, feedback: "Inspiring sports drama." }
     ];
     
     for (const rating of sampleRatings) {
