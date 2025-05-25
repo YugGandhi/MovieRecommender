@@ -13,7 +13,8 @@ export default function MovieCard({ movie, onClick, className = "" }: MovieCardP
   };
 
   const getPosterUrl = (path?: string) => {
-    if (!path) return "https://images.unsplash.com/photo-1489599096831-daa6f2a39f7b?ixlib=rb-4.0.3&w=400&h=600&fit=crop";
+    if (!path) return `https://via.placeholder.com/400x600/1f2937/ffffff?text=${encodeURIComponent(movie.title)}`;
+    // Try TMDB first, fallback to placeholder if it fails
     return `https://image.tmdb.org/t/p/w400${path}`;
   };
 
@@ -27,7 +28,7 @@ export default function MovieCard({ movie, onClick, className = "" }: MovieCardP
         alt={`${movie.title} poster`}
         className="w-full aspect-[2/3] object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
         onError={(e) => {
-          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1489599096831-daa6f2a39f7b?ixlib=rb-4.0.3&w=400&h=600&fit=crop";
+          (e.target as HTMLImageElement).src = `https://via.placeholder.com/400x600/1f2937/ffffff?text=${encodeURIComponent(movie.title)}`;
         }}
       />
       <div className="mt-3">

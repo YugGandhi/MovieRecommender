@@ -3,6 +3,7 @@ import {
   type User, type InsertUser, type Movie, type InsertMovie, 
   type UserRating, type InsertUserRating, type UserPreferences, type InsertUserPreferences 
 } from "@shared/schema";
+import { movieDatabase } from "./movie-data";
 
 export interface IStorage {
   // Users
@@ -57,79 +58,7 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeSampleMovies() {
-    const sampleMovies: InsertMovie[] = [
-      {
-        tmdbId: 335984,
-        title: "Blade Runner 2049",
-        overview: "Young Blade Runner K's discovery of a long-buried secret leads him to track down former Blade Runner Rick Deckard, who's been missing for thirty years.",
-        releaseDate: "2017-10-04",
-        posterPath: "/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-        backdropPath: "/sAtoMqDVhNDQBc3QJL3RF6hlBEy.jpg",
-        genres: ["Science Fiction", "Drama"],
-        runtime: 164,
-        voteAverage: 7.6,
-        voteCount: 8500,
-        popularity: 85.6,
-        originalLanguage: "en",
-        adult: false,
-        cinematicDna: {
-          visualStyle: ["Neon-lit", "Atmospheric", "Cyberpunk"],
-          pacing: "Slow Burn",
-          narrativeStructure: "Character Study",
-          themes: ["Identity", "Humanity", "Technology"]
-        },
-        moodTags: ["Thoughtful", "Mysterious", "Melancholic"],
-        microGenres: ["Contemplative Sci-Fi", "Neo-Noir", "Philosophical Drama"]
-      },
-      {
-        tmdbId: 329865,
-        title: "Arrival",
-        overview: "Taking place after alien crafts land around the world, an expert linguist is recruited by the military to determine whether they come in peace or are a threat.",
-        releaseDate: "2016-11-10",
-        posterPath: "/yImmxRokQ5KiEtBboGBkroHlrit.jpg",
-        backdropPath: "/yOJOcbWJNFJF5P8GzMYl7G9QNWo.jpg",
-        genres: ["Science Fiction", "Drama"],
-        runtime: 116,
-        voteAverage: 7.6,
-        voteCount: 7200,
-        popularity: 75.4,
-        originalLanguage: "en",
-        adult: false,
-        cinematicDna: {
-          visualStyle: ["Minimalist", "Atmospheric", "Cerebral"],
-          pacing: "Slow Burn",
-          narrativeStructure: "Non-linear",
-          themes: ["Communication", "Time", "Understanding"]
-        },
-        moodTags: ["Thoughtful", "Mysterious", "Emotional"],
-        microGenres: ["Contemplative Sci-Fi", "Linguistic Thriller", "Philosophical Drama"]
-      },
-      {
-        tmdbId: 550,
-        title: "Fight Club",
-        overview: "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy.",
-        releaseDate: "1999-10-15",
-        posterPath: "/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg",
-        backdropPath: "/87hTDiay2N2qWyX4Ds7ybXi9h8I.jpg",
-        genres: ["Drama", "Thriller"],
-        runtime: 139,
-        voteAverage: 8.4,
-        voteCount: 12000,
-        popularity: 95.2,
-        originalLanguage: "en",
-        adult: false,
-        cinematicDna: {
-          visualStyle: ["Gritty", "Dark", "Stylized"],
-          pacing: "Intense",
-          narrativeStructure: "Twist Ending",
-          themes: ["Identity", "Consumerism", "Masculinity"]
-        },
-        moodTags: ["Energetic", "Mysterious", "Rebellious"],
-        microGenres: ["Psychological Thriller", "Anti-Establishment", "Mind-Bender"]
-      }
-    ];
-
-    for (const movie of sampleMovies) {
+    for (const movie of movieDatabase) {
       await this.createMovie(movie);
     }
   }
