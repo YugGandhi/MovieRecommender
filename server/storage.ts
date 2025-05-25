@@ -61,6 +61,22 @@ export class MemStorage implements IStorage {
     for (const movie of movieDatabase) {
       await this.createMovie(movie);
     }
+    
+    // Add sample user and ratings to make My List functional
+    await this.createUser({ username: "demo_user", email: "demo@example.com" });
+    
+    // Add some sample ratings for the demo user
+    const sampleRatings = [
+      { userId: 1, movieId: 1, rating: 5, feedback: "Amazing sci-fi masterpiece!" },
+      { userId: 1, movieId: 2, rating: 4, feedback: "Great sequel to the original." },
+      { userId: 1, movieId: 3, rating: 4, feedback: "Mind-bending thriller!" },
+      { userId: 1, movieId: 4, rating: 3, feedback: "Decent action movie." },
+      { userId: 1, movieId: 5, rating: 5, feedback: "Perfect movie for any mood!" }
+    ];
+    
+    for (const rating of sampleRatings) {
+      await this.createUserRating(rating);
+    }
   }
 
   // Users
