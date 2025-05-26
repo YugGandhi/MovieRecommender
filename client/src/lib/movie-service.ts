@@ -1,4 +1,4 @@
-import { apiRequest } from "./queryClient";
+import { mockApi } from "./mock-data";
 import type { Movie, Mood, UserRating, UserPreferences } from "../types/movie";
 
 export class MovieService {
@@ -10,22 +10,11 @@ export class MovieService {
     pacing?: string;
     themes?: string[];
   } = {}): Promise<Movie[]> {
-    const searchParams = new URLSearchParams();
-    
-    if (params.mood) searchParams.set('mood', params.mood);
-    if (params.genre) searchParams.set('genre', params.genre);
-    if (params.search) searchParams.set('search', params.search);
-    if (params.visualStyle?.length) searchParams.set('visualStyle', params.visualStyle.join(','));
-    if (params.pacing) searchParams.set('pacing', params.pacing);
-    if (params.themes?.length) searchParams.set('themes', params.themes.join(','));
-    
-    const response = await apiRequest('GET', `/api/movies?${searchParams.toString()}`);
-    return response.json();
+    return mockApi.getMovies(params);
   }
 
   static async getMovie(id: number): Promise<Movie> {
-    const response = await apiRequest('GET', `/api/movies/${id}`);
-    return response.json();
+    return mockApi.getMovie(id);
   }
 
   static async getRecommendations(params: {
@@ -33,24 +22,15 @@ export class MovieService {
     context?: string;
     userId?: number;
   } = {}): Promise<Movie[]> {
-    const searchParams = new URLSearchParams();
-    
-    if (params.mood) searchParams.set('mood', params.mood);
-    if (params.context) searchParams.set('context', params.context);
-    if (params.userId) searchParams.set('userId', params.userId.toString());
-    
-    const response = await apiRequest('GET', `/api/recommendations?${searchParams.toString()}`);
-    return response.json();
+    return mockApi.getRecommendations(params);
   }
 
   static async getMoods(): Promise<Mood[]> {
-    const response = await apiRequest('GET', '/api/moods');
-    return response.json();
+    return mockApi.getMoods();
   }
 
   static async getMicroGenres(): Promise<string[]> {
-    const response = await apiRequest('GET', '/api/micro-genres');
-    return response.json();
+    return mockApi.getMicroGenres();
   }
 
   static async createRating(rating: {
@@ -61,8 +41,7 @@ export class MovieService {
     moodContext?: string;
     viewingContext?: string;
   }): Promise<UserRating> {
-    const response = await apiRequest('POST', '/api/ratings', rating);
-    return response.json();
+    return mockApi.createRating(rating);
   }
 
   static async updateRating(userId: number, movieId: number, updateData: {
@@ -71,18 +50,15 @@ export class MovieService {
     moodContext?: string;
     viewingContext?: string;
   }): Promise<UserRating> {
-    const response = await apiRequest('PUT', `/api/ratings/${userId}/${movieId}`, updateData);
-    return response.json();
+    return mockApi.createRating({ userId, movieId, ...updateData });
   }
 
   static async getUserRatings(userId: number): Promise<UserRating[]> {
-    const response = await apiRequest('GET', `/api/users/${userId}/ratings`);
-    return response.json();
+    return mockApi.getUserRatings(userId);
   }
 
   static async getUserPreferences(userId: number): Promise<UserPreferences> {
-    const response = await apiRequest('GET', `/api/users/${userId}/preferences`);
-    return response.json();
+    return mockApi.getUserPreferences(userId);
   }
 
   static async createUserPreferences(userId: number, preferences: {
@@ -96,8 +72,7 @@ export class MovieService {
       themes: string[];
     };
   }): Promise<UserPreferences> {
-    const response = await apiRequest('POST', `/api/users/${userId}/preferences`, preferences);
-    return response.json();
+    return mockApi.getUserPreferences(userId);
   }
 
   static async updateUserPreferences(userId: number, preferences: {
@@ -111,7 +86,80 @@ export class MovieService {
       themes: string[];
     };
   }): Promise<UserPreferences> {
-    const response = await apiRequest('PUT', `/api/users/${userId}/preferences`, preferences);
-    return response.json();
+    return mockApi.getUserPreferences(userId);
+  }
+
+  static async addToMyList(movieId: number): Promise<void> {
+    // In a real app, this would make an API call
+    console.log(`Added movie ${movieId} to my list`);
+  }
+
+  static async removeFromMyList(movieId: number): Promise<void> {
+    // In a real app, this would make an API call
+    console.log(`Removed movie ${movieId} from my list`);
+  }
+
+  static async getMyList(): Promise<Movie[]> {
+    return mockApi.getMyList();
+  }
+
+  static async getViewingHistory(): Promise<Movie[]> {
+    return mockApi.getViewingHistory();
+  }
+
+  static async updateProfile(userId: number, profileData: {
+    name?: string;
+    email?: string;
+    avatar?: string;
+    plan?: string;
+  }): Promise<void> {
+    // In a real app, this would make an API call
+    console.log(`Updated profile for user ${userId}`, profileData);
+  }
+
+  static async getProfile(userId: number): Promise<{
+    name: string;
+    email: string;
+    avatar: string;
+    plan: string;
+    memberSince: string;
+  }> {
+    return mockApi.getProfile(userId);
+  }
+
+  static async getMovieStats(): Promise<{
+    totalMovies: number;
+    genres: string[];
+    years: number[];
+    averageRating: number;
+    averageRuntime: number;
+  }> {
+    return mockApi.getMovieStats();
+  }
+
+  static async getSimilarMovies(movieId: number): Promise<(Movie & { similarityScore: number })[]> {
+    return mockApi.getSimilarMovies(movieId);
+  }
+
+  static async getTrendingMovies(): Promise<Movie[]> {
+    return mockApi.getTrendingMovies();
+  }
+
+  static async getNewReleases(): Promise<Movie[]> {
+    return mockApi.getNewReleases();
+  }
+
+  static async searchMovies(params: {
+    query?: string;
+    genres?: string[];
+    year?: number;
+    minRating?: number;
+    runtime?: string;
+    sortBy?: 'rating' | 'year' | 'title' | 'runtime';
+    visualStyle?: string[];
+    pacing?: string;
+    themes?: string[];
+  } = {}): Promise<Movie[]> {
+    return mockApi.getMovies(params);
   }
 }

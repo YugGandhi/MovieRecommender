@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import MoodSelector from "@/components/mood-selector";
 import MovieCard from "@/components/movie-card";
 import MovieModal from "@/components/movie-modal";
@@ -74,6 +75,16 @@ export default function Home() {
     setShowRatingModal(true);
   };
 
+  const handleAddToMyList = async (movie: Movie) => {
+    try {
+      await MovieService.addToMyList(movie.id);
+      // You might want to show a success toast here
+    } catch (error) {
+      // Handle error
+      console.error('Failed to add movie to list:', error);
+    }
+  };
+
   const getBackdropUrl = (path?: string) => {
     if (!path) return "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?ixlib=rb-4.0.3&w=1200&h=400&fit=crop";
     return `https://image.tmdb.org/t/p/w1280${path}`;
@@ -93,36 +104,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="bg-secondary border-b border-gray-800 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl">🎬</span>
-                <span className="text-xl font-bold">CineMatch</span>
-              </div>
-              <nav className="hidden md:flex space-x-6">
-                <a href="#" className="text-white hover:text-primary transition-colors">Discover</a>
-                <a href="#" className="text-neutral-light hover:text-white transition-colors">My List</a>
-                <a href="#" className="text-neutral-light hover:text-white transition-colors">Browse</a>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="text-neutral-light hover:text-white transition-colors">
-                🔍
-              </button>
-              <button className="text-neutral-light hover:text-white transition-colors">
-                🔔
-              </button>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium">JD</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Mood Selector */}
       <MoodSelector
         selectedMood={selectedMood}
@@ -172,21 +153,30 @@ export default function Home() {
                   </>
                 )}
               </div>
-              <div className="flex items-center space-x-4">
-                <button className="bg-primary hover:bg-red-700 px-8 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                  <span>▶️</span>
-                  <span>Watch Now</span>
-                </button>
-                <button className="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                  <span>➕</span>
-                  <span>My List</span>
-                </button>
-                <button 
+              <div className="flex flex-wrap items-center gap-4">
+                <Button 
+                  className="bg-primary hover:bg-red-700 px-8 py-3 transition-colors"
                   onClick={() => handleMovieClick(featuredMovie)}
-                  className="bg-transparent border border-white hover:bg-white hover:text-secondary px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
-                  More Info
-                </button>
+                  <span className="mr-2">▶️</span>
+                  Watch Now
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  className="bg-gray-700 hover:bg-gray-600 transition-colors"
+                  onClick={() => handleAddToMyList(featuredMovie)}
+                >
+                  <span className="mr-2">➕</span>
+                  Add to My List
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-white hover:bg-white hover:text-secondary transition-colors"
+                  onClick={() => handleRateClick(featuredMovie)}
+                >
+                  <span className="mr-2">👍</span>
+                  Rate
+                </Button>
               </div>
             </div>
           </div>
@@ -307,9 +297,9 @@ export default function Home() {
                         </p>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            {movie.microGenres && movie.microGenres[0] && (
+                            {movie.genres && movie.genres[0] && (
                               <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded">
-                                {movie.microGenres[0]}
+                                {movie.genres[0]}
                               </span>
                             )}
                             <span className="text-xs text-neutral-light">

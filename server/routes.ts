@@ -201,6 +201,101 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(microGenres);
   });
 
+  // Profile routes
+  app.get("/api/users/:userId/profile", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // For demo purposes, return a mock profile
+      res.json({
+        name: "John Doe",
+        email: "john.doe@example.com",
+        avatar: "JD",
+        plan: "Premium",
+        memberSince: "January 2024"
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch profile" });
+    }
+  });
+
+  app.put("/api/users/:userId/profile", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const updateData = req.body;
+      
+      // In a real app, you would update the user profile here
+      res.json({ message: "Profile updated successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update profile" });
+    }
+  });
+
+  // My List routes
+  app.get("/api/users/:userId/my-list", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const ratings = await storage.getUserRatings(userId);
+      const favoriteMovies = ratings
+        .filter(rating => rating.rating >= 4)
+        .map(rating => rating.movieId);
+      
+      const movies = await Promise.all(
+        favoriteMovies.map(movieId => storage.getMovie(movieId))
+      );
+      
+      res.json(movies.filter(Boolean));
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch my list" });
+    }
+  });
+
+  app.post("/api/users/:userId/my-list", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { movieId } = req.body;
+      
+      // In a real app, you would add the movie to the user's list
+      res.status(201).json({ message: "Movie added to list" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add movie to list" });
+    }
+  });
+
+  app.delete("/api/users/:userId/my-list/:movieId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const movieId = parseInt(req.params.movieId);
+      
+      // In a real app, you would remove the movie from the user's list
+      res.json({ message: "Movie removed from list" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to remove movie from list" });
+    }
+  });
+
+  // Viewing History routes
+  app.get("/api/users/:userId/history", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const ratings = await storage.getUserRatings(userId);
+      const watchedMovies = ratings.map(rating => rating.movieId);
+      
+      const movies = await Promise.all(
+        watchedMovies.map(movieId => storage.getMovie(movieId))
+      );
+      
+      res.json(movies.filter(Boolean));
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch viewing history" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

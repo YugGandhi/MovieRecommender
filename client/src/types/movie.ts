@@ -1,6 +1,5 @@
 export interface Movie {
   id: number;
-  tmdbId: number;
   title: string;
   overview?: string;
   releaseDate?: string;
@@ -13,14 +12,13 @@ export interface Movie {
   popularity?: number;
   originalLanguage?: string;
   adult?: boolean;
-  cinematicDna?: {
-    visualStyle: string[];
-    pacing: string;
-    narrativeStructure: string;
-    themes: string[];
-  };
-  moodTags?: string[];
-  microGenres?: string[];
+  // Custom fields for mock data compatibility
+  director?: string;
+  cast?: string[];
+  mood?: string;
+  visualStyle?: string[];
+  pacing?: string;
+  themes?: string[];
   compatibilityScore?: number;
 }
 
