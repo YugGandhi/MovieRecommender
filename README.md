@@ -1,4 +1,7 @@
 🎬 MovieRecommender
+
+preview : https://movie-mate-kappa.vercel.app
+
 AI Movie Curator
 An intelligent movie recommender that analyzes mood, context, and viewing patterns to suggest the perfect films. It goes beyond genres with personality profiling, group matching, and discovery algorithms for personalized cinematic experiences.
 
